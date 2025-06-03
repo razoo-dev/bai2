@@ -4,12 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'bai2'
-  spec.version       = '2.0.1'
-  spec.authors       = ['Kenneth Ballenegger']
-  spec.email         = ['kenneth@ballenegger.com']
-  spec.summary       = %q{Parse BAI2 files.}
-  spec.description   = %q{Parse BAI2 files.}
-  spec.homepage      = 'https://github.com/venturehacks/bai2'
+  spec.version       = '2.1.0'
+  spec.authors       = ['Kenneth Ballenegger', 'Bryce Melvin']
+  spec.email         = ['kenneth@ballenegger.com', 'bryce@mightycause.com']
+  spec.summary       = %q{Parse BAI2 files with enhanced format support and custom integrity checking.}
+  spec.description   = %q{Parse BAI2 files with support for variable continuation records, lenient integrity checking, and business-level validation.}
+  spec.homepage      = 'https://github.com/razoo-dev/bai2'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")

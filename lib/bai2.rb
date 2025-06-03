@@ -1,7 +1,7 @@
-require 'bai2/record'
-require 'bai2/parser'
-require 'bai2/integrity'
-require 'bai2/attr-reader-from-ivar-hash'
+require_relative 'bai2/record'
+require_relative 'bai2/parser'
+require_relative 'bai2/integrity'
+require_relative 'bai2/attr-reader-from-ivar-hash'
 
 module Bai2
 
@@ -14,6 +14,9 @@ module Bai2
       account_control_ignores_summary_amounts: false,
       num_account_summary_continuation_records: 0,
       continuations_slash_delimit_end_of_line_only: false,
+      # Enhanced integrity checking options
+      skip_integrity_checks: false,
+      skip_record_count_validation: false,
     }.freeze
 
     # Parse a file on disk:
@@ -33,7 +36,7 @@ module Bai2
       @raw = raw
       @groups = []
       @options = DEFAULT_OPTIONS.merge(options)
-      parse(raw, options)
+      parse(raw, @options)
     end
 
     # This is the raw data. Probably not super important.
@@ -69,8 +72,8 @@ module Bai2
       # parse the file node; will descend tree and parse children
       parse_file_node(root)
 
-      # assert integrity
-      assert_integrity!
+      # assert integrity (unless skipped)
+      assert_integrity! unless @options[:skip_integrity_checks]
     end
 
 

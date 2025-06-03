@@ -38,12 +38,15 @@ module Bai2
       # Run children assertions, which return number of records. May raise.
       records = self.groups.map {|g| g.send(:assert_integrity!, @options) }.reduce(0, &:+)
 
-      unless expectation[:records] == (actual_num_records = records + 2)
-        raise IntegrityError.new(
-          "Record count invalid: file: #{expectation[:records]}, groups: #{actual_num_records}")
+      # Check record count (unless skipped)
+      unless @options[:skip_record_count_validation]
+        unless expectation[:records] == (actual_num_records = records + 2)
+          raise IntegrityError.new(
+            "Record count invalid: file: #{expectation[:records]}, groups: #{actual_num_records}")
+        end
       end
 
-      actual_num_records
+      records + 2
     end
 
 
@@ -81,13 +84,16 @@ module Bai2
         # Run children assertions, which return number of records. May raise.
         records = self.accounts.map {|a| a.send(:assert_integrity!, options) }.reduce(0, &:+)
 
-        unless expectation[:records] == (actual_num_records = records + 2)
-          raise IntegrityError.new(
-            "Record count invalid: group: #{expectation[:records]}, accounts: #{actual_num_records}")
+        # Check record count (unless skipped)
+        unless options[:skip_record_count_validation]
+          unless expectation[:records] == (actual_num_records = records + 2)
+            raise IntegrityError.new(
+              "Record count invalid: group: #{expectation[:records]}, accounts: #{actual_num_records}")
+          end
         end
 
         # Return record count
-        actual_num_records
+        records + 2
       end
     end
 
@@ -129,9 +135,12 @@ module Bai2
         additional_records = 2 + options[:num_account_summary_continuation_records]
         actual_num_records = records + additional_records
 
-        unless expectation[:records] == actual_num_records
-          raise IntegrityError.new(
-              "Record count invalid: account: #{expectation[:records]}, transactions: #{actual_num_records}")
+        # Check record count (unless skipped)
+        unless options[:skip_record_count_validation]
+          unless expectation[:records] == actual_num_records
+            raise IntegrityError.new(
+                "Record count invalid: account: #{expectation[:records]}, transactions: #{actual_num_records}")
+          end
         end
 
         # Return record count

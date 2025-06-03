@@ -1,4 +1,4 @@
-require 'bai2/record'
+require_relative 'record'
 
 module Bai2
 

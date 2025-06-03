@@ -1,6 +1,4 @@
-require 'bai2/parser'
-require 'bai2/type-code-data.rb'
-
+require_relative 'type-code-data'
 require 'time'
 
 module Bai2

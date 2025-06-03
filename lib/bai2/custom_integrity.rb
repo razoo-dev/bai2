@@ -94,7 +94,7 @@ module Bai2
     
     # Validates business rules specific to your application
     def self.validate_business_rules(bai, results, options)
-      expected_customers = options[:expected_customers] || ['0005157748558']
+      expected_customers = options[:expected_customers] || []
       
       bai.groups.each_with_index do |group, group_index|
         group.accounts.each_with_index do |account, account_index|
@@ -184,11 +184,10 @@ module Bai2
       # Bank-specific recommendations
       customer_ids = bai.groups.flat_map { |g| g.accounts.map(&:customer) }.uniq
       if customer_ids.any? { |id| id.start_with?('144') }
-        results[:recommendations] << "CFOT customer detected - ensure proper processing entity configuration"
+        results[:recommendations] << "Customer ID starting with 144 detected - may require special processing configuration"
       end
       
-      if customer_ids.include?('0005157748558')
-        results[:recommendations] << "MCF customer detected - standard processing applies"
+      # Removed hardcoded customer ID check
       end
     end
   end
